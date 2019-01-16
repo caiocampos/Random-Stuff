@@ -1,27 +1,45 @@
 use std::collections::HashSet;
+use rayon::prelude::*;
 
 pub fn find(sum: u32) -> HashSet<[u32; 3]> {
     let max = sum / 3;
-    let mut res: HashSet<[u32; 3]> = HashSet::new();
-    for a in 1..max {
+    (1..max).into_par_iter().map(|a| {
         let a2 = a.pow(2);
-        let sma = sum - a;
-        if a2 < sma || a2 % sma != 0 {
-            continue;
-        }
-        let dif = a2 / sma;
-        //let b = (sum - dif - a) / 2;
-        let b = (sma - dif) / 2;
-        if a >= b {
-            continue;
-        }
-        let c = b + dif;
         // a2 + b.pow(2) == c.pow(2)
         // a2 == c.pow(2) - b.pow(2)
-        // a2 == dif.pow(2) + 2 * b * dif
-        if a2 + b.pow(2) == c.pow(2) {
-            res.insert([a, b, c]);
+        // a2 == (c - b) * (c + b)
+        // ...
+        // a + b + c == sum
+        // b + c == sum - a
+        // ...
+        // a2 == (c - b) * (sum - a)
+        let sma = sum - a;
+        // a2 == (c - b) * sma
+        // c - b == a2 / sma
+        if a2 < sma || a2 % sma != 0 {
+            return [0, 0, 0];
         }
-    }
-    res
+        // dif == c - b
+        let dif = a2 / sma;
+        // a + b + c == sum
+        // ...
+        // c == b + dif
+        // ...
+        // a + b + b + dif == sum
+        // 2 * b == sum - a - dif
+        // b == (sum - a - dif) / 2;
+        let b = (sma - dif) / 2;
+        // a < b < c
+        if a >= b {
+            return [0, 0, 0];
+        }
+        let c = b + dif;
+        // a2 == (c - b) * (c + b)
+        // a2 == (b + dif - b) * (b + dif + b)
+        // a2 == dif * (dif + 2 * b)
+        if a2 == dif.pow(2) + 2 * b * dif {
+            return [a, b, c];
+        }
+        [0, 0, 0]
+    }).filter(|el| el[0] != 0).collect::<HashSet<[u32; 3]>>()
 }
