@@ -1,13 +1,10 @@
+// Package space provides ways to calculate how many orbital periods (years) a given time represents on other Planets
 package space
 
-/*
-Planet a alias to string
-*/
+// Planet a alias to string
 type Planet string
 
-/*
-Enum of Planets
-*/
+// Enum of Planets
 const (
 	Earth   Planet = "Earth"
 	Mercury Planet = "Mercury"
@@ -19,9 +16,7 @@ const (
 	Neptune Planet = "Neptune"
 )
 
-/*
-Enum of the duration of the orbital period (year) on each Planet
-*/
+// Enum of the duration of the orbital period (year) on each Planet
 const (
 	EarthYear   float64 = 31557600
 	MercuryYear float64 = EarthYear * 0.2408467
@@ -33,9 +28,7 @@ const (
 	NeptuneYear float64 = EarthYear * 164.79132
 )
 
-/*
-Age function calculate how old someone would be on a Planet
-*/
+// Age function calculate how old someone would be on a Planet
 func Age(seconds float64, planet Planet) float64 {
 	switch planet {
 	case Earth:
