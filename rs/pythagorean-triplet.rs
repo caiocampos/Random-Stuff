@@ -25,6 +25,12 @@ pub fn exact_div(dividend: u32, divisor: u32) -> DivisionResult {
 
 // last version
 pub fn find_vb(sum: u32) -> HashSet<[u32; 3]> {
+    // a < b < c
+    // 1 < 2 < 3 - nothing smaller is possíble
+    // min sum == 6
+    if sum < 6 {
+        return HashSet::new();
+    }
     let max = sum / 3;
     (1..max)
         .into_par_iter()
@@ -47,9 +53,6 @@ pub fn find_vb(sum: u32) -> HashSet<[u32; 3]> {
             // ...
             // b == sum * (sum - 2*a) / 2*(sum - a)
             let sma = sum - a;
-            if a >= sma {
-                return [0, 0, 0];
-            }
             let bd = exact_div(sum * (sma - a), 2 * sma);
             if bd.remainder != 0 {
                 return [0, 0, 0];
@@ -83,6 +86,12 @@ pub fn find_vb(sum: u32) -> HashSet<[u32; 3]> {
 
 // original version
 pub fn find_va(sum: u32) -> HashSet<[u32; 3]> {
+    // a < b < c
+    // 1 < 2 < 3 - nothing smaller is possíble
+    // min sum == 6
+    if sum < 6 {
+        return HashSet::new();
+    }
     let max = sum / 3;
     (1..max)
         .into_par_iter()
