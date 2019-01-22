@@ -2,11 +2,92 @@ use rayon::prelude::*;
 use std::collections::HashSet;
 
 pub fn find(sum: u32) -> HashSet<[u32; 3]> {
+    find_vb(sum)
+}
+
+pub struct DivisionResult {
+    quotient: u32,
+    remainder: u32,
+}
+
+pub fn exact_div(dividend: u32, divisor: u32) -> DivisionResult {
+    let mut res = DivisionResult {
+        quotient: 0,
+        remainder: dividend % divisor,
+    };
+    if res.remainder != 0 {
+        res
+    } else {
+        res.quotient = dividend / divisor;
+        res
+    }
+}
+
+// last version
+pub fn find_vb(sum: u32) -> HashSet<[u32; 3]> {
     let max = sum / 3;
     (1..max)
         .into_par_iter()
         .map(|a| {
-            let a2 = a.pow(2);
+            // a.pow(2) + b.pow(2) == c.pow(2)
+            // b.pow(2) == c.pow(2) - a.pow(2)
+            // (2*b*c + b.pow(2)) + b.pow(2) == c.pow(2) - a.pow(2) + (2*b*c + b.pow(2))
+            // 2*b*c + 2*b.pow(2) == c.pow(2) + 2*b*c + b.pow(2) - a.pow(2)
+            // 2*b*(c + b) == (c + b).pow(2) - a.pow(2)
+            // 2*b*(c + b) == ((c + b) + a) * ((c + b) - a)
+            // 2*b*(c + b) == (c + b + a) * (c + b - a)
+            // b == (c + b + a) * (c + b - a) / 2*(c + b)
+            // ...
+            // c + b + a == sum
+            // c + b + a - (2*a) == sum - (2*a)
+            // c + b - a == sum - 2*a
+            // ...
+            // c + b + a == sum
+            // c + b == sum - a
+            // ...
+            // b == sum * (sum - 2*a) / 2*(sum - a)
+            let sma = sum - a;
+            if a >= sma {
+                return [0, 0, 0];
+            }
+            let bd = exact_div(sum * (sma - a), 2 * sma);
+            if bd.remainder != 0 {
+                return [0, 0, 0];
+            }
+            let b = bd.quotient;
+            // c + b = sum - a
+            // c = sum - a - b
+            if a >= b || b >= sma {
+                return [0, 0, 0];
+            }
+            let c = sma - b;
+            if b >= c {
+                return [0, 0, 0];
+            }
+            // a.pow(2) + b.pow(2) == c.pow(2)
+            // a.pow(2) == c.pow(2) - b.pow(2)
+            // a.pow(2) == (c - b) * (c + b)
+            // a == (c - b) * (c + b) / a
+            // ...
+            // c + b == sum - a
+            let ad = exact_div((c - b) * sma, a);
+            if (ad.remainder == 0) && (a == ad.quotient) {
+                [a, b, c]
+            } else {
+                [0, 0, 0]
+            }
+        })
+        .filter(|el| el[0] != 0)
+        .collect::<HashSet<[u32; 3]>>()
+}
+
+// original version
+pub fn find_va(sum: u32) -> HashSet<[u32; 3]> {
+    let max = sum / 3;
+    (1..max)
+        .into_par_iter()
+        .map(|a| {
+            let a2 = a * a;
             // a2 + b.pow(2) == c.pow(2)
             // a2 == c.pow(2) - b.pow(2)
             // a2 == (c - b) * (c + b)
@@ -18,11 +99,15 @@ pub fn find(sum: u32) -> HashSet<[u32; 3]> {
             let sma = sum - a;
             // a2 == (c - b) * sma
             // c - b == a2 / sma
-            if a2 < sma || a2 % sma != 0 {
+            if a2 < sma {
+                return [0, 0, 0];
+            }
+            let dif = exact_div(a2, sma);
+            if dif.remainder != 0 {
                 return [0, 0, 0];
             }
             // dif == c - b
-            let dif = a2 / sma;
+            let dif = dif.quotient;
             // a + b + c == sum
             // ...
             // c == b + dif
