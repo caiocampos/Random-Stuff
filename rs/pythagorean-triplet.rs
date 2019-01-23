@@ -34,7 +34,7 @@ pub fn find_vb(sum: u32) -> HashSet<[u32; 3]> {
     let max = sum / 3;
     (1..max)
         .into_par_iter()
-        .map(|a| {
+        .filter_map(|a| {
             // a.pow(2) + b.pow(2) == c.pow(2)
             // b.pow(2) == c.pow(2) - a.pow(2)
             // (2*b*c + b.pow(2)) + b.pow(2) == c.pow(2) - a.pow(2) + (2*b*c + b.pow(2))
@@ -55,17 +55,17 @@ pub fn find_vb(sum: u32) -> HashSet<[u32; 3]> {
             let sma = sum - a;
             let bd = exact_div(sum * (sma - a), 2 * sma);
             if bd.remainder != 0 {
-                return [0, 0, 0];
+                return None;
             }
             let b = bd.quotient;
             // c + b = sum - a
             // c = sum - a - b
             if a >= b || b >= sma {
-                return [0, 0, 0];
+                return None;
             }
             let c = sma - b;
             if b >= c {
-                return [0, 0, 0];
+                return None;
             }
             // a.pow(2) + b.pow(2) == c.pow(2)
             // a.pow(2) == c.pow(2) - b.pow(2)
@@ -75,12 +75,11 @@ pub fn find_vb(sum: u32) -> HashSet<[u32; 3]> {
             // c + b == sum - a
             let ad = exact_div((c - b) * sma, a);
             if (ad.remainder == 0) && (a == ad.quotient) {
-                [a, b, c]
+                Some([a, b, c])
             } else {
-                [0, 0, 0]
+                None
             }
         })
-        .filter(|el| el[0] != 0)
         .collect::<HashSet<[u32; 3]>>()
 }
 
@@ -95,7 +94,7 @@ pub fn find_va(sum: u32) -> HashSet<[u32; 3]> {
     let max = sum / 3;
     (1..max)
         .into_par_iter()
-        .map(|a| {
+        .filter_map(|a| {
             let a2 = a * a;
             // a2 + b.pow(2) == c.pow(2)
             // a2 == c.pow(2) - b.pow(2)
@@ -109,11 +108,11 @@ pub fn find_va(sum: u32) -> HashSet<[u32; 3]> {
             // a2 == (c - b) * sma
             // c - b == a2 / sma
             if a2 < sma {
-                return [0, 0, 0];
+                return None;
             }
             let dif = exact_div(a2, sma);
             if dif.remainder != 0 {
-                return [0, 0, 0];
+                return None;
             }
             // dif == c - b
             let dif = dif.quotient;
@@ -127,14 +126,14 @@ pub fn find_va(sum: u32) -> HashSet<[u32; 3]> {
             let b = (sma - dif) / 2;
             // a < b < c
             if a >= b {
-                return [0, 0, 0];
+                return None;
             }
             let c = b + dif;
             if sum == a + b + c {
-                return [a, b, c];
+                Some([a, b, c])
+            } else {
+                None
             }
-            [0, 0, 0]
         })
-        .filter(|el| el[0] != 0)
         .collect::<HashSet<[u32; 3]>>()
 }
