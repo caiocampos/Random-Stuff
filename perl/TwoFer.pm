@@ -12,6 +12,12 @@ sub two_fer {
   #
   # or
   # my ($name) = @_;
+  # if (!$name) {
+  #   $name = "you"
+  # }
+  #
+  # or
+  # my ($name) = @_;
   # unless ($name) {
   #   $name = "you"
   # }
