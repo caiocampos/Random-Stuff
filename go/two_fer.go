@@ -1,10 +1,9 @@
-// Package twofer provides ways to generate strings on Two-fer pattern
 package twofer
 
 import "strings"
 
 /*
-ShareWith function receives a string (name) as parameter, if name is empty then it is replaced by "you".
+ShareWith function receive a string (name) as parameter, if name is empty then it is replaced by "you".
 This function return the string "One for {{name}}, one for me."
 */
 func ShareWith(name string) string {
