@@ -13,7 +13,7 @@ sub hey {
   return 'Whoa, chill out!' if $is_upper;
   return 'Sure.' if $is_question;
   return 'Fine. Be that way!' if $msg =~ /^\s*$/;
-  return 'Whatever.'
+  'Whatever.'
 }
 
 1;
