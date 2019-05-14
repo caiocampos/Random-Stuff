@@ -1,0 +1,1 @@
+for /D %%G in ("*") do (echo %%G) && (cd %%G) && (git pull --progress -v --no-rebase origin) && (cd ..)
