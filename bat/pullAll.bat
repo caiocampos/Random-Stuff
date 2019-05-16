@@ -1,3 +1,13 @@
 @echo off
-echo pulling all repositories...
-for /D %%G in ("*") do (echo. && echo. && echo pulling %%G... && echo.) && (cd %%G) && (git pull --progress -v --no-rebase origin) && (cd ..)
+echo Pulling all repositories...
+for /D %%G in ("*") do (
+ cd %%G
+ if exist .git (
+  echo.
+  echo.
+  echo Pulling %%G...
+  echo.
+  git pull --progress -v --no-rebase origin
+ )
+ cd ..
+)
