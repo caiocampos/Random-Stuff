@@ -1,4 +1,4 @@
-!(() => {
+(() => {
 	const arr = Array.from({length: 10000}, () => Math.floor(Math.random() * 1000));
 	let res;
 	const f = (a) => a & 1 ? a : -a;
