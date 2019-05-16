@@ -58,7 +58,7 @@
 		for (let i = 0; i < 1000; i++) {
 			fx();
 		}
-		const t = (new Date() - b);
+		const t = new Date() - b;
 		console.log(`${name}: ${t}μs`);
 	};
 	Object.entries(fx).forEach(e => test(e[0], e[1]));
