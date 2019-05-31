@@ -1,42 +1,63 @@
-enum DocumentType {
+
+enum DataType {
 	NO_TYPE,
-	A_TYPE;
+	A_TYPE
 }
 
-abstract class Origin {
-	public static DocumentType getType() {
-		return DocumentType.NO_TYPE;
+abstract class TypedData {
+	public static DataType getType() {
+		return DataType.NO_TYPE;
 	}
 }
 
-class A extends Origin {
-	public static DocumentType getType() {
-		return DocumentType.A_TYPE;
+abstract class ObjectDTO extends TypedData {
+}
+
+class ADTO extends ObjectDTO {
+	public static DataType getType() {
+		return DataType.A_TYPE;
 	}
 
+	ADTO(Document doc) {
+	}
 }
 
-interface Document {
+abstract class Document extends TypedData {
 }
 
-class ADocument implements Document {
+class ADocument extends Document {
+	public static DataType getType() {
+		return DataType.A_TYPE;
+	}
 
-	ADocument(Origin o) {
-
+	ADocument(ObjectDTO dto) {
 	}
 }
 
 @FunctionalInterface
 interface DocumentFactory {
-	<T extends Origin> Document createDocument(T obj);
+	Document createDocument(ObjectDTO dto);
 }
 
-abstract class AbstractDocumentFactory {
-	public static <T extends Origin> DocumentFactory getFactory(T o) {
-		switch (o.getType()) {
+@FunctionalInterface
+interface ObjectDTOFactory {
+	ObjectDTO createDocument(Document doc);
+}
+
+abstract class AbstractDataFactory {
+	public static DocumentFactory getFactory(ObjectDTO dto) {
+		switch (dto.getType()) {
 			case A_TYPE:
 				return ADocument::new;
 		}
-		return ADocument::new;
+		return null;
+	}
+
+	public static ObjectDTOFactory getFactory(Document doc) {
+		switch (doc.getType()) {
+			case A_TYPE:
+				return ADTO::new;
+		}
+		return null;
 	}
 }
