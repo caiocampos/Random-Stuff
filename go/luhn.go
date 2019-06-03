@@ -7,7 +7,7 @@ import (
 
 // Valid function verifies if the input is valid per the Luhn formula
 func Valid(input string) bool {
-	return ValidVC(input)
+	return ValidVB(input)
 }
 
 // ValidVA function verifies if the input is valid per the Luhn formula (Version A)
