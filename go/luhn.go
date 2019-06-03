@@ -79,7 +79,7 @@ func calculates(n int, double bool) int {
 }
 
 var regexSpaces = regexp.MustCompile(`\s`)
-var regexNotDigit = regexp.MustCompile(`\s`)
+var regexNotDigit = regexp.MustCompile(`\D`)
 
 // ValidVC function verifies if the input is valid per the Luhn formula (Version C)
 func ValidVC(input string) bool {
