@@ -110,13 +110,17 @@ func ValidVC(input string) bool {
 // ValidVD function verifies if the input is valid per the Luhn formula (Version D for dummies)
 func ValidVD(input string) bool {
 	vals := strings.Replace(input, " ", "", -1)
-	if _, err := strconv.Atoi(vals); err != nil || len(vals) < 2 {
+	if len(vals) < 2 {
 		return false
 	}
 	double := len(vals)%2 == 0 // begin doubling if len(vals) is even
 	sum, val := 0, 0
+	var err error
 	for _, el := range vals {
-		val, _ = strconv.Atoi(string(el))
+		val, err = strconv.Atoi(string(el))
+		if err != nil {
+			return false
+		}
 		if double {
 			val *= 2
 			if val > 9 {
