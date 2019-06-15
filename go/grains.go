@@ -1,13 +1,9 @@
 package grains
 
-import (
-	"errors"
-)
+import "errors"
 
 const chessMin int = 1
 const chessMax int = 64
-
-const one uint64 = 1
 
 // Square function gives the number of grains for the inputed number
 func Square(n int) (uint64, error) {
@@ -19,9 +15,9 @@ func Square(n int) (uint64, error) {
 
 // Total function gives the number of grains for the 64 squares of the chessboard
 func Total() uint64 {
-	return powTwo(chessMax+1)-1
+	return powTwo(chessMax+1) - 1
 }
 
 func powTwo(n int) uint64 {
-	return one << uint(n-1) // one << uint(n-1) == math.Pow(2, n)
+	return 1 << uint(n-1) // 1 << uint(n-1) == math.Pow(2, n)
 }
