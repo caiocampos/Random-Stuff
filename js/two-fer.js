@@ -14,6 +14,9 @@ function twoFerVC (name) {
   return `One for ${name || 'you'}, one for me.`;
 }
 
-export const twoFer = (name) => {
-  return twoFerVC(name);
-};
+// eslint-disable-next-line no-unused-vars
+function twoFerVD (name = 'you') {
+  return `One for ${name}, one for me.`;
+}
+
+export const twoFer = twoFerVD;
