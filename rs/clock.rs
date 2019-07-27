@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct Clock {
     hours: i32,
     minutes: i32,
@@ -46,14 +46,6 @@ impl fmt::Display for Clock {
     }
 }
 
-impl PartialEq for Clock {
-    fn eq(&self, other: &Self) -> bool {
-        self.hours == other.hours && self.minutes == other.minutes
-    }
-}
-
-impl Eq for Clock {}
-
 impl From<String> for Clock {
     fn from(s: String) -> Self {
         let numbers: Vec<i32> = s.split(is_not_numeric).map(parse_number).collect();
@@ -64,6 +56,12 @@ impl From<String> for Clock {
 impl From<&str> for Clock {
     fn from(s: &str) -> Self {
         Clock::from(s.to_owned())
+    }
+}
+
+impl From<Clock> for String {
+    fn from(c: Clock) -> Self {
+        c.to_string()
     }
 }
 
