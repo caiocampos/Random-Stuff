@@ -25,7 +25,7 @@ pub fn encode(plain: &str) -> String {
 
 /// Decipher a text with the Atbash cipher.
 pub fn decode(cipher: &str) -> String {
-    let mut plain = String::default();
+    let mut plain = String::new();
     for c in cipher.chars() {
         if c.is_numeric() {
             plain.push(c);
