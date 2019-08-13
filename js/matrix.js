@@ -4,7 +4,7 @@ export class Matrix {
   }
 
   get rows() {
-    return this.matrix.slice(0);
+    return this.matrix.map(row => row.slice(0));
   }
 
   get columns() {

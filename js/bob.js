@@ -1,7 +1,7 @@
 export const hey = (message) => {
   message = !message ? '' : message.trimRight();
   const question = message.endsWith('?');
-  const upper = message.toUpperCase() === message && message.toLowerCase() !== message;
+  const upper = message.search(/[A-Z]/) > -1 && message.search(/[a-z]/) === -1;
   const empty = !message;
   switch (true) {
     case question && upper: return "Calm down, I know what I'm doing!";
