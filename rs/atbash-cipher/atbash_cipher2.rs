@@ -15,13 +15,14 @@ pub fn encode(plain: &str) -> String {
         .chars()
         .filter_map(encode_char)
         .enumerate()
-        .fold(String::new(), |mut cipher, (i, c)| {
+        .flat_map(|(i, c)| {
             if i > 0 && i % 5 == 0 {
-                cipher.push(' ');
+                vec![' ', c]
+            } else {
+                vec![c]
             }
-            cipher.push(c);
-            cipher
         })
+        .collect()
 }
 
 /// Decipher a text with the Atbash cipher.
