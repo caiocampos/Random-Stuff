@@ -4,14 +4,14 @@ pub fn anagrams_for<'a>(word: &str, possible_anagrams: &[&'a str]) -> HashSet<&'
     let word = word.to_lowercase();
     possible_anagrams
         .iter()
-        .cloned()
-        .filter(|el| {
-            let el = el.to_lowercase();
+        .filter(|candidate| {
+            let el = candidate.to_lowercase();
             if el.len() != word.len() || word == el {
                 return false;
             }
             word.chars().all(|c| test(c, &word, &el))
         })
+        .cloned()
         .collect()
 }
 
