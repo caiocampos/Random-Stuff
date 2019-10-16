@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    width="1000" height="1000">
+  <defs>
+    <filter id="shadow" width="200%" height="200%">
+      <feGaussianBlur result="blurOut" in="SourceGraphic" stdDeviation="2" />
+      <feColorMatrix result="colorOut" in="blurOut"
+        type="matrix"
+        values="0 0 0 0 1
+                0 0 0 0 1
+                0 0 0 0 1
+                0 0 0 3 0" />
+      <feBlend in="SourceGraphic" in2="colorOut" mode="normal" />
+    </filter>
+  </defs>
+  <text x="50%" y="450" dominant-baseline="middle" text-anchor="middle"
+	style="fill: black; font-size: 36px; font-weight: bolder;"
+	filter="url(#shadow)">Several lines:
+    <tspan x="50%" y="500">First line.</tspan>
+    <tspan x="50%" y="550">Second line.</tspan>
+  </text>
+</svg>
