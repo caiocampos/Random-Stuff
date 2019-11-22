@@ -8,7 +8,7 @@ import (
 // Frequency type defines a alias for map[string]int
 type Frequency map[string]int
 
-// WordCount function calculates the fraquency of an word in a frase
+// WordCount function calculates the frequency of an word in a frase
 func WordCount(input string) Frequency {
 	res := make(Frequency)
 	for _, word := range regexp.MustCompile("(\\'*[^0-9A-Za-z']+\\'*)+").Split(strings.ToLower(input)+" ", -1) {
