@@ -14,7 +14,7 @@ const images = [
 let data = '';
 
 for (const img of images) {
-	data += 'file ' + img + '\n';
+	data += `file '${img}'\n`;
 }
 
 fs.writeFileSync('res', data);
