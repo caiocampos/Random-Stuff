@@ -1,52 +1,82 @@
 (() => {
-	const arr = Array.from({length: 10000}, () => Math.floor(Math.random() * 1000));
+	const arr = Array.from({length: 50000}, () => Math.floor(Math.random() * 1000));
 	let res;
 	const f = (a) => a & 1 ? a : -a;
 	const fx = {
-		fa: () => {
+		forEach: () => {
 			res = 0;
 			arr.forEach(el => {
 				res += f(el);
 			});
 		},
-		fb: () => {
+		mapReduce: () => {
 			res = arr.map(el => f(el)).reduce((t, el) => t + el);
 		},
-		fc: () => {
+		forIConstLen: () => {
 			res = 0;
 			const len = arr.length;
 			for (let i = 0; i < len; i++) {
 				res += f(arr[i]);
 			}
 		},
-		fd: () => {
+		forI: () => {
 			res = 0;
 			for (let i = 0; i < arr.length; i++) {
 				res += f(arr[i]);
 			}
 		},
-		fe: () => {
+		forOfVar: () => {
 			res = 0;
 			for (var el of arr) {
 				res += f(el);
 			}
 		},
-		ff: () => {
+		forOfLet: () => {
 			res = 0;
 			for (let el of arr) {
 				res += f(el);
 			}
 		},
-		fg: () => {
+		forOfConst: () => {
+			res = 0;
+			for (const el of arr) {
+				res += f(el);
+			}
+		},
+		forInVar: () => {
 			res = 0;
 			for (var i in arr) {
 				res += f(arr[i]);
 			}
 		},
-		fh: () => {
+		forInLet: () => {
 			res = 0;
 			for (let i in arr) {
 				res += f(arr[i]);
+			}
+		},
+		forInConst: () => {
+			res = 0;
+			for (const i in arr) {
+				res += f(arr[i]);
+			}
+		},
+		forOfEntriesVar: () => {
+			res = 0;
+			for (var [_i, el] of arr.entries()) {
+				res += f(el);
+			}
+		},
+		forOfEntriesLet: () => {
+			res = 0;
+			for (let [_i, el] of arr.entries()) {
+				res += f(el);
+			}
+		},
+		forOfEntriesConst: () => {
+			res = 0;
+			for (const [_i, el] of arr.entries()) {
+				res += f(el);
 			}
 		}
 	};
@@ -55,7 +85,7 @@
 			return;
 		}
 		const b = new Date();
-		for (let i = 0; i < 1000; i++) {
+		for (let i = 0; i < 100; i++) {
 			fx();
 		}
 		const t = new Date() - b;
